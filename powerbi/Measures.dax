@@ -1,0 +1,16 @@
+-- Individual measures; month must be on the visual axis or selected by slicer.
+Ending MRR = SUM(Fact_Subscription_Monthly[mrr_end])
+Opening MRR = SUM(Fact_Subscription_Monthly[mrr_start])
+New MRR = SUM(Fact_Subscription_Monthly[new_mrr])
+Expansion MRR = SUM(Fact_Subscription_Monthly[expansion_mrr])
+Contraction MRR = SUM(Fact_Subscription_Monthly[contraction_mrr])
+Churned MRR = SUM(Fact_Subscription_Monthly[churn_mrr])
+Active Customers = SUM(Fact_Subscription_Monthly[active_end])
+Churned Customers = SUM(Fact_Subscription_Monthly[churned_customers])
+Opening Customers = CALCULATE(COUNTROWS(Fact_Subscription_Monthly), Fact_Subscription_Monthly[mrr_start] > 0)
+Customer Churn % = DIVIDE([Churned Customers], [Opening Customers])
+Net Revenue Retention % = DIVIDE([Opening MRR] + [Expansion MRR] - [Contraction MRR] - [Churned MRR], [Opening MRR])
+Gross Revenue Retention % = DIVIDE([Opening MRR] - [Contraction MRR] - [Churned MRR], [Opening MRR])
+New Customers = SUM(Fact_Subscription_Monthly[new_customers])
+-- For the latest month headline KPI: use a SINGLE month in the month slicer/card context.
+Average Revenue per Active User = DIVIDE([Ending MRR], [Active Customers])

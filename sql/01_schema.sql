@@ -1,0 +1,4 @@
+CREATE TABLE dim_plans (plan_id TEXT PRIMARY KEY,plan_name TEXT NOT NULL,monthly_price REAL NOT NULL);
+CREATE TABLE dim_customers (customer_id TEXT PRIMARY KEY,acquisition_month TEXT NOT NULL,segment TEXT NOT NULL,region TEXT NOT NULL,acquisition_channel TEXT NOT NULL,starting_plan TEXT NOT NULL);
+CREATE TABLE fact_subscription_monthly (snapshot_id INTEGER PRIMARY KEY,month TEXT NOT NULL,customer_id TEXT NOT NULL REFERENCES dim_customers(customer_id),plan_id TEXT NOT NULL REFERENCES dim_plans(plan_id),mrr_start REAL NOT NULL,new_mrr REAL NOT NULL,expansion_mrr REAL NOT NULL,contraction_mrr REAL NOT NULL,churn_mrr REAL NOT NULL,mrr_end REAL NOT NULL,new_customers INTEGER NOT NULL,churned_customers INTEGER NOT NULL,active_end INTEGER NOT NULL,UNIQUE(month,customer_id));
+CREATE INDEX subscriptions_month ON fact_subscription_monthly(month);
